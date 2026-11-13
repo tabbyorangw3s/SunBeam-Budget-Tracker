@@ -1,0 +1,143 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#FFFDF5">
+  <title>Sunbeam — Personal budget</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <main class="app">
+    <header class="topbar">
+      <div class="brand"><span class="brand-icon" aria-hidden="true">☀️</span> Sunbeam</div>
+      <div class="top-actions">
+        <select class="month-select" id="monthSelect" aria-label="Choose month"></select>
+        <button type="button" class="secondary-button" id="importCsv" title="Merge transactions from a CSV; previously imported IDs are skipped.">↑ Import CSV</button>
+        <button type="button" class="secondary-button" id="exportCsv">↓ Export CSV</button>
+        <input id="importFile" type="file" accept=".csv,text/csv" hidden>
+      </div>
+    </header>
+
+    <section class="greeting" aria-label="Welcome">
+      <div class="eyebrow" id="dateLabel">A little more sunshine in your finances</div>
+      <h1>Your money, in a brighter place <span aria-hidden="true">🌼</span></h1>
+    </section>
+
+    <section class="summary-grid" aria-label="Budget overview">
+      <article class="card summary-card balance">
+        <div class="summary-label">Total balance</div><div class="summary-emoji" aria-hidden="true">🌞</div>
+        <div class="summary-value" id="balanceAmount">₱0.00</div><div class="summary-note">Income minus expenses to date</div>
+      </article>
+      <article class="card summary-card income">
+        <div class="summary-label">Monthly income</div><div class="summary-emoji" aria-hidden="true">🌱</div>
+        <div class="summary-value" id="incomeAmount">₱0.00</div><div class="summary-note" id="incomeNote">This month</div>
+      </article>
+      <article class="card summary-card expenses">
+        <div class="summary-label">Total expenses</div><div class="summary-emoji" aria-hidden="true">🧾</div>
+        <div class="summary-value" id="expenseAmount">₱0.00</div><div class="summary-note" id="expenseNote">This month</div>
+      </article>
+    </section>
+
+    <section class="overview-grid" aria-label="Spending overview">
+      <article class="card panel">
+        <div class="panel-heading"><div><h2>Spending breakdown</h2><div class="subtle" style="margin-top:5px">Where your money went this month</div></div><span class="pill" id="chartMonth">This month</span></div>
+        <div class="donut-layout">
+          <div class="donut-wrap"><div class="donut" id="donutChart" role="img" aria-label="Spending by category"></div><div class="donut-center"><strong id="donutTotal">₱0.00</strong><span>spent</span></div></div>
+          <div class="legend" id="chartLegend"></div>
+        </div>
+      </article>
+      <article class="card panel">
+        <div class="panel-heading"><div><h2>Category budgets</h2><div class="subtle" style="margin-top:5px">Keep your spending on track</div></div></div>
+        <div class="category-budget-list" id="budgetList"></div>
+        <div class="budget-actions"><button type="button" class="text-button" id="editBudgets">Edit category limits</button></div>
+      </article>
+    </section>
+
+    <section class="content-grid" aria-label="Activity and plans">
+      <article class="card panel">
+        <div class="section-heading">
+          <div><h2>Recent transactions</h2><div class="subtle" style="margin-top:5px">Income and spending, all in one place</div></div>
+          <button type="button" class="primary-button" id="openTransaction"><span aria-hidden="true">＋</span> Add transaction</button>
+        </div>
+        <div class="transaction-list" id="transactionList"></div>
+      </article>
+
+      <div class="side-stack">
+        <article class="card panel">
+          <div class="section-heading">
+            <div><h2>Sinking funds</h2><div class="subtle" style="margin-top:5px">Little by little adds up</div></div>
+            <button type="button" class="primary-button small" id="addGoal">＋ New goal</button>
+          </div>
+          <div class="goal-list" id="goalList"></div>
+        </article>
+        <article class="card panel" style="margin-top:17px">
+          <div class="section-heading">
+            <div><h2>Upcoming bills</h2><div class="subtle" style="margin-top:5px">A clear view of what's due</div></div>
+            <button type="button" class="primary-button small" id="addBill">＋ Add bill</button>
+          </div>
+          <div class="bill-list" id="billList"></div>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-backdrop" id="transactionModal" role="dialog" aria-modal="true" aria-labelledby="transactionHeading">
+    <form class="modal" id="transactionForm">
+      <h2 id="transactionHeading">Add a transaction</h2>
+      <div class="form-grid">
+        <div class="form-field full"><label for="transactionTitle">Title</label><input id="transactionTitle" name="title" placeholder="e.g. Weekly groceries" maxlength="60" required></div>
+        <div class="form-field"><label for="transactionAmount">Amount</label><input id="transactionAmount" name="amount" type="number" min="0.01" step="0.01" placeholder="0.00" required></div>
+        <div class="form-field"><label for="transactionType">Type</label><select id="transactionType" name="type"><option value="expense">Expense</option><option value="income">Income</option></select></div>
+        <div class="form-field"><label for="transactionCategory">Category</label><select id="transactionCategory" name="category"></select></div>
+        <div class="form-field"><label for="transactionDate">Date</label><input id="transactionDate" name="date" type="date" required></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="cancel-button" data-close="transactionModal">Cancel</button><button type="submit" class="primary-button">Save transaction</button></div>
+    </form>
+  </div>
+
+  <div class="modal-backdrop" id="budgetModal" role="dialog" aria-modal="true" aria-labelledby="budgetHeading">
+    <form class="modal" id="budgetForm">
+      <h2 id="budgetHeading">Set category budgets</h2>
+      <div class="form-grid" id="budgetFields"></div>
+      <div class="modal-actions"><button type="button" class="cancel-button" data-close="budgetModal">Cancel</button><button type="submit" class="primary-button">Save budgets</button></div>
+    </form>
+  </div>
+
+  <div class="modal-backdrop" id="goalModal" role="dialog" aria-modal="true" aria-labelledby="goalHeading">
+    <form class="modal" id="goalForm">
+      <h2 id="goalHeading">Create a savings goal</h2>
+      <div class="form-grid">
+        <div class="form-field full"><label for="goalName">Goal name</label><input id="goalName" name="name" placeholder="e.g. Weekend getaway" maxlength="40" required></div>
+        <div class="form-field"><label for="goalTarget">Target amount</label><input id="goalTarget" name="target" type="number" min="1" step="0.01" required></div>
+        <div class="form-field"><label for="goalSaved">Already saved</label><input id="goalSaved" name="saved" type="number" min="0" step="0.01" value="0" required></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="cancel-button" data-close="goalModal">Cancel</button><button type="submit" class="primary-button">Save goal</button></div>
+    </form>
+  </div>
+
+  <div class="modal-backdrop" id="fundModal" role="dialog" aria-modal="true" aria-labelledby="fundHeading">
+    <form class="modal" id="fundForm">
+      <h2 id="fundHeading">Add funds</h2>
+      <p class="subtle" id="fundGoalName" style="margin:-8px 0 17px"></p>
+      <div class="form-field"><label for="fundAmount">Amount to add</label><input id="fundAmount" type="number" min="0.01" step="0.01" required></div>
+      <div class="modal-actions"><button type="button" class="cancel-button" data-close="fundModal">Cancel</button><button type="submit" class="primary-button">Add funds</button></div>
+    </form>
+  </div>
+
+  <div class="modal-backdrop" id="billModal" role="dialog" aria-modal="true" aria-labelledby="billHeading">
+    <form class="modal" id="billForm">
+      <h2 id="billHeading">Add a recurring bill</h2>
+      <div class="form-grid">
+        <div class="form-field full"><label for="billName">Bill or subscription</label><input id="billName" name="name" placeholder="e.g. Internet" maxlength="40" required></div>
+        <div class="form-field"><label for="billAmount">Amount</label><input id="billAmount" name="amount" type="number" min="0.01" step="0.01" required></div>
+        <div class="form-field"><label for="billDay">Due day each month</label><input id="billDay" name="day" type="number" min="1" max="31" value="15" required></div>
+      </div>
+      <div class="modal-actions"><button type="button" class="cancel-button" data-close="billModal">Cancel</button><button type="submit" class="primary-button">Save bill</button></div>
+    </form>
+  </div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="app.js" defer></script>
+</body>
+</html>
