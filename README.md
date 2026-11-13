@@ -1,19 +1,19 @@
 🌻 Sunbeam — Personal Budget Tracker
 
-> "Your money, in a brighter place."[cite: 1]
+> "Your money, in a brighter place."
 
-Sunbeam is a warm, minimalist personal finance and budget tracker designed to make managing everyday spending calm, visual, and effortless. Built with a cozy pastel yellow aesthetic, it gives you an instant overview of your cash flow, category limits, and savings goals in one place[cite: 1].
+Sunbeam is a warm, minimalist personal finance and budget tracker designed to make managing everyday spending calm, visual, and effortless. Built with a cozy pastel yellow aesthetic, it gives you an instant overview of your cash flow, category limits, and savings goals in one place.
 
 ---
 
 ✨ Features
 
-* Dashboard Overview: Track your **Total Balance**, **Monthly Income**, and **Total Expenses** at a glance, complete with a month selector to review past activity[cite: 1].
-* Visual Spending Breakdown: An interactive donut chart that categorizes monthly spending across Bills, Food, Entertainment, and Shopping[cite: 1].
-* Category Budgets & Alerts: Customizable spending limits with progress bars that automatically turn terracotta red when a category goes over budget (e.g., Bills)[cite: 1].
-* Transaction Logger: Quickly add or remove income and expense entries with dates, amounts (`₱`), and categories[cite: 1].
-* Sinking Funds (Savings Goals): Create dedicated savings targets like an *Emergency Fund* or *New Tech* with progress bars and one-click **+ Add funds** updates[cite: 1].
-* CSV Import & Export: Easily back up your financial data or import existing records via CSV[cite: 1].
+* Dashboard Overview: Track your **Total Balance**, **Monthly Income**, and **Total Expenses** at a glance, complete with a month selector to review past activity.
+* Visual Spending Breakdown: An interactive donut chart that categorizes monthly spending across Bills, Food, Entertainment, and Shopping.
+* Category Budgets & Alerts: Customizable spending limits with progress bars that automatically turn terracotta red when a category goes over budget (e.g., Bills).
+* Transaction Logger: Quickly add or remove income and expense entries with dates, amounts (`₱`), and categories.
+* Sinking Funds (Savings Goals): Create dedicated savings targets like an *Emergency Fund* or *New Tech* with progress bars and one-click **+ Add funds** updates.
+* CSV Import & Export: Easily back up your financial data or import existing records via CSV.
 
 ---
 
