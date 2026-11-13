@@ -1,3 +1,6 @@
+<img width="1567" height="958" alt="image" src="https://github.com/user-attachments/assets/65ae8c98-3387-4d8b-8d85-ff49cd90cbfa" />
+
+
 🌻 Sunbeam — Personal Budget Tracker
 
 > "Your money, in a brighter place."
